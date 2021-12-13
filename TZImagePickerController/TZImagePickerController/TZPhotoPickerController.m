@@ -40,6 +40,7 @@
 @property (nonatomic, assign) BOOL isSelectOriginalPhoto;
 @property (nonatomic, strong) TZCollectionView *collectionView;
 @property (nonatomic, strong) UIButton *titleButton;
+@property (nonatomic, strong) UIView *titleBgView;
 @property (nonatomic, strong) UILabel *noDataLabel;
 @property (strong, nonatomic) UICollectionViewFlowLayout *layout;
 @property (nonatomic, strong) UIImagePickerController *imagePickerVc;
@@ -97,8 +98,16 @@ static CGFloat itemMargin = 5;
     
     UIImage *image = tzImagePickerVc.arrowBtnIconImage;
     
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 40)];
-    UIButton *titleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 200, 40)];
+    CGFloat width = [UIScreen mainScreen].bounds.size.width * 0.6;
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 40)];
+    self.titleBgView = [[UIView alloc] init];
+    [titleView addSubview:self.titleBgView];
+    self.titleBgView.layer.cornerRadius = 16.f;
+    self.titleBgView.center = CGPointMake(width * 0.5 - 7, 20);
+    self.titleBgView.bounds = CGRectMake(0, 0, 40, 32);
+    self.titleBgView.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.1];
+    
+    UIButton *titleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, width, 40)];
     self.titleButton = titleButton;
     [titleView addSubview:titleButton];
     titleButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
@@ -112,6 +121,7 @@ static CGFloat itemMargin = 5;
     titleButton.titleEdgeInsets = UIEdgeInsetsMake(0, -(20 + padding/2), 0, (20 + padding/2));
     [titleButton.titleLabel sizeToFit];
     titleButton.imageEdgeInsets = UIEdgeInsetsMake(0, (titleButton.titleLabel.frame.size.width+ padding/2), 0, -(titleButton.titleLabel.frame.size.width+ padding/2));
+    self.titleBgView.bounds = CGRectMake(0, 0, titleButton.titleLabel.frame.size.width + 50, 32);
     
     self.navigationItem.titleView = titleView;
     
@@ -399,6 +409,8 @@ static CGFloat itemMargin = 5;
             weakSelf.titleButton.titleEdgeInsets = UIEdgeInsetsMake(0, -(20 + padding/2), 0, (20 + padding/2));
             [weakSelf.titleButton.titleLabel sizeToFit];
             weakSelf.titleButton.imageEdgeInsets = UIEdgeInsetsMake(0, (weakSelf.titleButton.titleLabel.frame.size.width+ padding/2), 0, -(weakSelf.titleButton.titleLabel.frame.size.width+ padding/2));
+            
+            weakSelf.titleBgView.bounds = CGRectMake(0, 0, weakSelf.titleButton.titleLabel.frame.size.width + 50, 32);
             
             [weakSelf reloadImageData];
             [weakSelf showAlbumPicker];

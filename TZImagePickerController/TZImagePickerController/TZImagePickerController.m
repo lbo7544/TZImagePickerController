@@ -298,7 +298,8 @@
     self.photoPreviewMaxWidth = 600;
     self.naviTitleColor = [UIColor whiteColor];
     self.naviSubTitleColor = [UIColor grayColor];
-    self.naviTitleFont = [UIFont systemFontOfSize:17];
+    self.normalBgColor = [UIColor colorWithRed:18/255.0 green:14/255.0 blue:27/255.0 alpha:1.0];
+    self.naviTitleFont = [UIFont boldSystemFontOfSize:18];
     self.barItemTextFont = [UIFont systemFontOfSize:15];
     self.barItemTextColor = [UIColor whiteColor];
     self.allowPreview = YES;
@@ -827,12 +828,8 @@
                     } else {
                         // Fallback on earlier versions
                     }
-                    self->_tableView.rowHeight = 70;
-//                    if (@available(iOS 13.0, *)) {
-//                        self->_tableView.backgroundColor = [UIColor tertiarySystemBackgroundColor];
-//                    } else {
-//                        self->_tableView.backgroundColor = [UIColor whiteColor];
-//                    }
+                    self->_tableView.rowHeight = 112;
+                    self->_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                     self->_tableView.backgroundColor = imagePickerVc.naviBgColor;
                     self->_tableView.tableFooterView = [[UIView alloc] init];
                     self->_tableView.dataSource = self;

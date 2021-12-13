@@ -261,6 +261,7 @@
     if (_imageView == nil) {
         UIImageView *imageView = [[UIImageView alloc] init];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.layer.cornerRadius = 16.f;
         imageView.clipsToBounds = YES;
         [self.contentView addSubview:imageView];
         _imageView = imageView;
@@ -356,12 +357,8 @@
     } else {
         _selectPhotoButton.frame = self.bounds;
     }
-    _selectImageView.frame = CGRectMake(self.tz_width - 27, 3, 24, 24);
-    if (_selectImageView.image.size.width <= 27) {
-        _selectImageView.contentMode = UIViewContentModeCenter;
-    } else {
-        _selectImageView.contentMode = UIViewContentModeScaleAspectFit;
-    }
+    _selectImageView.frame = CGRectMake(self.tz_width - 28, 8, 20, 20);
+    _selectImageView.contentMode = UIViewContentModeScaleAspectFit;
     _indexLabel.frame = _selectImageView.frame;
     _imageView.frame = self.bounds;
 
@@ -394,34 +391,36 @@
 @end
 
 @interface TZAlbumCell ()
+
 @property (weak, nonatomic) UIImageView *posterImageView;
 @property (weak, nonatomic) UILabel *titleLabel;
+@property (weak, nonatomic) UILabel *countLabel;
+
 @end
 
 @implementation TZAlbumCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    self.backgroundColor = [UIColor whiteColor];
-//    self.accessoryType = UITableViewCellAccessoryNone;
+    self.backgroundColor = [UIColor clearColor];
     return self;
 }
 
 - (void)setModel:(TZAlbumModel *)model {
     _model = model;
     
-    NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:model.name attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:16],NSForegroundColorAttributeName:self.titleColor}];
-    NSAttributedString *countString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"  (%zd)",model.count] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:self.countColor}];
-    [nameString appendAttributedString:countString];
-    self.titleLabel.attributedText = nameString;
+    self.titleLabel.text = model.name;
+    self.countLabel.text = @(model.count).stringValue;
+    self.titleLabel.textColor = self.titleColor;
+    self.countLabel.textColor = self.countColor;
+    
     [[TZImageManager manager] getPostImageWithAlbumModel:model completion:^(UIImage *postImage) {
         self.posterImageView.image = postImage;
         [self setNeedsLayout];
     }];
+    
     if (model.isCurrentSelected) {
         self.selectedCountButton.hidden = NO;
-//        [self.selectedCountButton setImage:<#(nullable UIImage *)#> forState:UIControlStateNormal];
-//        [self.selectedCountButton setTitle:[NSString stringWithFormat:@"%zd",model.selectedCount] forState:UIControlStateNormal];
     } else {
         self.selectedCountButton.hidden = YES;
     }
@@ -433,10 +432,10 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    _selectedCountButton.frame = CGRectMake(self.contentView.tz_width - 24 - 16, 23, 24, 24);
-    NSInteger titleHeight = ceil(self.titleLabel.font.lineHeight);
-    self.titleLabel.frame = CGRectMake(80, (self.tz_height - titleHeight) / 2, self.tz_width - 80 - 50, titleHeight);
-    self.posterImageView.frame = CGRectMake(0, 0, 70, 70);
+    _selectedCountButton.frame = CGRectMake(self.contentView.tz_width - 24 - 16, 46, 24, 24);
+    self.titleLabel.frame = CGRectMake(112, 28, self.tz_width - 112 - 50, 24);
+    self.countLabel.frame = CGRectMake(112, 63, self.tz_width - 112 - 50, 24);
+    self.posterImageView.frame = CGRectMake(16, 16, 80, 80);
     
     if (self.albumCellDidLayoutSubviewsBlock) {
         self.albumCellDidLayoutSubviewsBlock(self, _posterImageView, _titleLabel);
@@ -454,6 +453,8 @@
         UIImageView *posterImageView = [[UIImageView alloc] init];
         posterImageView.contentMode = UIViewContentModeScaleAspectFill;
         posterImageView.clipsToBounds = YES;
+        posterImageView.layer.cornerRadius = 16.f;
+        posterImageView.layer.masksToBounds = YES;
         [self.contentView addSubview:posterImageView];
         _posterImageView = posterImageView;
     }
@@ -474,6 +475,22 @@
         _titleLabel = titleLabel;
     }
     return _titleLabel;
+}
+
+- (UILabel *)countLabel {
+    if (_countLabel == nil) {
+        UILabel *countLabel = [[UILabel alloc] init];
+        countLabel.font = [UIFont systemFontOfSize:14];
+        if (@available(iOS 13.0, *)) {
+            countLabel.textColor = UIColor.labelColor;
+        } else {
+            countLabel.textColor = [UIColor blackColor];
+        }
+        countLabel.textAlignment = NSTextAlignmentLeft;
+        [self.contentView addSubview:countLabel];
+        _countLabel = countLabel;
+    }
+    return _countLabel;
 }
 
 - (UIButton *)selectedCountButton {
@@ -504,6 +521,8 @@
         _imageView = [[UIImageView alloc] init];
         _imageView.backgroundColor = [UIColor colorWithRed:71/255.0 green:70/255.0 blue:100/255.0 alpha:1];
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
+        _imageView.layer.cornerRadius = 16.f;
+        _imageView.layer.masksToBounds = YES;
         [self.contentView addSubview:_imageView];
         self.clipsToBounds = YES;
     }
