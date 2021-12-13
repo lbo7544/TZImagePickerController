@@ -66,9 +66,14 @@
     // 默认的外观，你可以在这个方法后重置
     self.oKButtonTitleColorNormal   = [UIColor colorWithRed:(83/255.0) green:(179/255.0) blue:(17/255.0) alpha:1.0];
     self.oKButtonTitleColorDisabled = [UIColor colorWithRed:(83/255.0) green:(179/255.0) blue:(17/255.0) alpha:0.5];
+    // 默认颜色
+    if (!_naviBgColor) {
+        _naviBgColor = [UIColor colorWithRed:18/255.0 green:14/255.0 blue:27/255.0 alpha:1.0];
+    }
     
-    self.navigationBar.barTintColor = [UIColor colorWithRed:(34/255.0) green:(34/255.0)  blue:(34/255.0) alpha:1.0];
-    self.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationBar.barTintColor = self.naviBgColor;
+    self.navigationBar.backgroundColor = self.naviBgColor;
+    self.navigationBar.tintColor = self.naviBgColor;
     self.automaticallyAdjustsScrollViewInsets = NO;
     if (self.needShowStatusBar) [UIApplication sharedApplication].statusBarHidden = NO;
 }
@@ -104,12 +109,7 @@
 - (void)configNavigationBarAppearance {
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *barAppearance = [[UINavigationBarAppearance alloc] init];
-        if (self.navigationBar.isTranslucent) {
-            UIColor *barTintColor = self.navigationBar.barTintColor;
-            barAppearance.backgroundColor = [barTintColor colorWithAlphaComponent:0.85];
-        } else {
-            barAppearance.backgroundColor = self.navigationBar.barTintColor;
-        }
+        barAppearance.backgroundColor = self.navigationBar.barTintColor;
         barAppearance.titleTextAttributes = self.navigationBar.titleTextAttributes;
         self.navigationBar.standardAppearance = barAppearance;
         self.navigationBar.scrollEdgeAppearance = barAppearance;

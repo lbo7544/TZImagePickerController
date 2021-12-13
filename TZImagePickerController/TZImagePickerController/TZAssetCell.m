@@ -438,7 +438,7 @@
     self.posterImageView.frame = CGRectMake(16, 16, 80, 80);
     
     if (self.albumCellDidLayoutSubviewsBlock) {
-        self.albumCellDidLayoutSubviewsBlock(self, _posterImageView, _titleLabel);
+        self.albumCellDidLayoutSubviewsBlock(self, _posterImageView, _titleLabel, _countLabel);
     }
 }
 
