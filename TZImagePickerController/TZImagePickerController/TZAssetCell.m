@@ -411,8 +411,6 @@
     
     self.titleLabel.text = model.name;
     self.countLabel.text = @(model.count).stringValue;
-    self.titleLabel.textColor = self.titleColor;
-    self.countLabel.textColor = self.countColor;
     
     [[TZImageManager manager] getPostImageWithAlbumModel:model completion:^(UIImage *postImage) {
         self.posterImageView.image = postImage;

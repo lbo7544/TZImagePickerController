@@ -102,6 +102,7 @@ static CGFloat itemMargin = 5;
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 40)];
     self.titleBgView = [[UIView alloc] init];
     [titleView addSubview:self.titleBgView];
+    self.titleBgView.hidden = ![[TZImageManager manager] authorizationStatusAuthorized];
     self.titleBgView.layer.cornerRadius = 16.f;
     self.titleBgView.center = CGPointMake(width * 0.5 - 7, 20);
     self.titleBgView.bounds = CGRectMake(0, 0, 40, 32);
@@ -109,6 +110,7 @@ static CGFloat itemMargin = 5;
     
     UIButton *titleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, width, 40)];
     self.titleButton = titleButton;
+    titleButton.hidden = ![[TZImageManager manager] authorizationStatusAuthorized];
     [titleView addSubview:titleButton];
     titleButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     [titleButton setTitle:_model.name forState:UIControlStateNormal];
@@ -139,6 +141,10 @@ static CGFloat itemMargin = 5;
 }
 
 - (void)fetchAssetModels {
+    if ([[TZImageManager manager] authorizationStatusAuthorized]) {
+        self.titleButton.hidden = NO;
+        self.titleBgView.hidden = NO;
+    }
     TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)self.navigationController;
     if (_isFirstAppear && !_model.models.count) {
         [tzImagePickerVc showProgressHUD];

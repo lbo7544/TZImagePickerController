@@ -212,7 +212,7 @@
             _tipLabel.textAlignment = NSTextAlignmentCenter;
             _tipLabel.numberOfLines = 0;
             _tipLabel.font = [UIFont systemFontOfSize:16];
-            _tipLabel.textColor = [UIColor blackColor];
+            _tipLabel.textColor = self.naviTitleColor;
             _tipLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
             NSString *appName = [TZCommonTools tz_getAppName];
@@ -917,8 +917,6 @@
     cell.albumCellDidSetModelBlock = imagePickerVc.albumCellDidSetModelBlock;
     [cell.selectedCountButton setImage:imagePickerVc.photoOriginSelImage forState:UIControlStateNormal];
     cell.selectedCountButton.backgroundColor = [UIColor clearColor];
-    cell.titleColor = imagePickerVc.naviTitleColor;
-    cell.countColor = imagePickerVc.naviSubTitleColor;
     cell.model = _albumArr[indexPath.row];
     cell.accessoryType = UITableViewCellAccessoryNone;
     return cell;
