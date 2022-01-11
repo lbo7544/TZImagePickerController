@@ -769,6 +769,7 @@
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithImage:imagePickerVc.closeBtnIconImage style:(UIBarButtonItemStylePlain) target:self action:@selector(cancelButtonClick)];
     [TZCommonTools configBarButtonItem:cancelItem tzImagePickerVc:imagePickerVc];
     self.navigationItem.leftBarButtonItem = cancelItem;
+    self.view.backgroundColor = imagePickerVc.normalBgColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
