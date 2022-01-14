@@ -796,7 +796,7 @@
 
     TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
     if (self.isFirstAppear) {
-        [imagePickerVc showProgressHUD];
+//        [imagePickerVc showProgressHUD];
     }
 
     dispatch_async(dispatch_get_global_queue(0, 0), ^{

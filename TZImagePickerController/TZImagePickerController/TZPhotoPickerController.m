@@ -583,7 +583,7 @@ static CGFloat itemMargin = 5;
         return;
     }
     
-    [tzImagePickerVc showProgressHUD];
+//    [tzImagePickerVc showProgressHUD];
     _doneButton.enabled = NO;
     self.isFetchingMedia = YES;
     NSMutableArray *assets = [NSMutableArray array];
@@ -1064,8 +1064,8 @@ static CGFloat itemMargin = 5;
     [picker dismissViewControllerAnimated:YES completion:nil];
     NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
     if ([type isEqualToString:@"public.image"]) {
-        TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
-        [imagePickerVc showProgressHUD];
+//        TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
+//        [imagePickerVc showProgressHUD];
         UIImage *photo = [info objectForKey:UIImagePickerControllerOriginalImage];
         NSDictionary *meta = [info objectForKey:UIImagePickerControllerMediaMetadata];
         if (photo) {
@@ -1082,8 +1082,8 @@ static CGFloat itemMargin = 5;
             self.location = nil;
         }
     } else if ([type isEqualToString:@"public.movie"]) {
-        TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
-        [imagePickerVc showProgressHUD];
+//        TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
+//        [imagePickerVc showProgressHUD];
         NSURL *videoUrl = [info objectForKey:UIImagePickerControllerMediaURL];
         if (videoUrl) {
             self.isSavingMedia = YES;
