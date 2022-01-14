@@ -144,6 +144,7 @@ static CGFloat itemMargin = 5;
     if ([[TZImageManager manager] authorizationStatusAuthorized]) {
         self.titleButton.hidden = NO;
         self.titleBgView.hidden = NO;
+        _noDataLabel.hidden = YES;
         [self setupTitleText:_model.name];
     }
     TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)self.navigationController;
@@ -701,9 +702,8 @@ static CGFloat itemMargin = 5;
 #pragma mark - UICollectionViewDataSource && Delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (_noDataLabel && _models.count) {
-        [_noDataLabel removeFromSuperview];
-        _noDataLabel = nil;
+    if (_models.count > 0) {
+        _noDataLabel.hidden = YES;
     }
     if (_showTakePhotoBtn) {
         return _models.count + 1;
