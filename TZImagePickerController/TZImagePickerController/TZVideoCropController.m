@@ -122,7 +122,7 @@
     [self.view addSubview:_cancelButton];
     
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    _doneButton.titleLabel.font = self.imagePickerVc.doneBtnTextFont;
     _doneButton.layer.cornerRadius = 14.0;
     _doneButton.layer.masksToBounds = YES;
     [_doneButton addTarget:self action:@selector(doneButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -186,7 +186,7 @@
     _cancelButton.frame = CGRectMake(12, self.view.tz_height - toolBarHeight, 44, 44);
     [_cancelButton sizeToFit];
     _cancelButton.tz_height = 44;
-    _doneButton.frame = CGRectMake(self.view.tz_width - doneButtonWidth - 12 - 16, 12, doneButtonWidth + 16, 28);
+    _doneButton.frame = CGRectMake(self.view.tz_width - doneButtonWidth - 12 - 20, 12, doneButtonWidth + 20, 28);
     _playButton.frame = CGRectMake(0, statusBarAndNaviBarHeight, self.view.tz_width, self.view.tz_height - statusBarAndNaviBarHeight - toolBarHeight);
     
     CGFloat collectionViewH = (self.view.tz_width - VideoEditLeftMargin * 2 - 2 * PanImageWidth) / 10.0 * 2;

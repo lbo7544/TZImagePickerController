@@ -61,7 +61,7 @@
     TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)self.navigationController;
     
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    _doneButton.titleLabel.font = tzImagePickerVc.doneBtnTextFont;
     _doneButton.layer.cornerRadius = 14.0;
     _doneButton.layer.masksToBounds = YES;
     [_doneButton addTarget:self action:@selector(doneButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -94,7 +94,7 @@
     CGFloat toolBarHeight = 44 + [TZCommonTools tz_safeAreaInsets].bottom;
     _toolBar.frame = CGRectMake(0, self.view.tz_height - toolBarHeight, self.view.tz_width, toolBarHeight);
     [_doneButton sizeToFit];
-    _doneButton.frame = CGRectMake(self.view.tz_width - _doneButton.tz_width - 12 - 16, 12, MAX(44, _doneButton.tz_width + 16), 28);
+    _doneButton.frame = CGRectMake(self.view.tz_width - _doneButton.tz_width - 12 - 20, 12, MAX(44, _doneButton.tz_width + 20), 28);
     _playButton.frame = CGRectMake(0, statusBarAndNaviBarHeight, self.view.tz_width, self.view.tz_height - statusBarAndNaviBarHeight - toolBarHeight);
     _playerLayer.frame = self.view.bounds;
 }

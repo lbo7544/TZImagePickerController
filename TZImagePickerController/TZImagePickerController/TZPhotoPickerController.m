@@ -144,6 +144,7 @@ static CGFloat itemMargin = 5;
     if ([[TZImageManager manager] authorizationStatusAuthorized]) {
         self.titleButton.hidden = NO;
         self.titleBgView.hidden = NO;
+        [self setupTitleText:_model.name];
     }
     TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)self.navigationController;
     if (_isFirstAppear && !_model.models.count) {
@@ -239,6 +240,11 @@ static CGFloat itemMargin = 5;
             _noDataLabel = nil;
         }
     }
+    
+    if (_noDataLabel && _models.count) {
+        [_noDataLabel removeFromSuperview];
+        _noDataLabel = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -277,7 +283,7 @@ static CGFloat itemMargin = 5;
     
     _previewButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_previewButton addTarget:self action:@selector(previewButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    _previewButton.titleLabel.font = [UIFont systemFontOfSize:16];
+    _previewButton.titleLabel.font = tzImagePickerVc.previewTextFont;
     [_previewButton setTitle:tzImagePickerVc.previewBtnTitleStr forState:UIControlStateNormal];
     [_previewButton setTitle:tzImagePickerVc.previewBtnTitleStr forState:UIControlStateDisabled];
     if (@available(iOS 13.0, *)) {
@@ -292,7 +298,7 @@ static CGFloat itemMargin = 5;
         _originalPhotoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _originalPhotoButton.imageEdgeInsets = UIEdgeInsetsMake(0, [TZCommonTools tz_isRightToLeftLayout] ? 10 : -10, 0, 0);
         [_originalPhotoButton addTarget:self action:@selector(originalPhotoButtonClick) forControlEvents:UIControlEventTouchUpInside];
-        _originalPhotoButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        _originalPhotoButton.titleLabel.font = tzImagePickerVc.previewTextFont;
         [_originalPhotoButton setTitle:tzImagePickerVc.fullImageBtnTitleStr forState:UIControlStateNormal];
         [_originalPhotoButton setTitle:tzImagePickerVc.fullImageBtnTitleStr forState:UIControlStateSelected];
         [_originalPhotoButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
@@ -310,7 +316,7 @@ static CGFloat itemMargin = 5;
         
         _originalPhotoLabel = [[UILabel alloc] init];
         _originalPhotoLabel.textAlignment = NSTextAlignmentLeft;
-        _originalPhotoLabel.font = [UIFont boldSystemFontOfSize:14];
+        _originalPhotoLabel.font = tzImagePickerVc.previewTextFont;
         if (@available(iOS 13.0, *)) {
             _originalPhotoLabel.textColor = [UIColor labelColor];
         } else {
@@ -320,7 +326,7 @@ static CGFloat itemMargin = 5;
     }
     
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    _doneButton.titleLabel.font = tzImagePickerVc.doneBtnTextFont;
     _doneButton.layer.cornerRadius = 14.0;
     _doneButton.layer.masksToBounds = YES;
     [_doneButton addTarget:self action:@selector(doneButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -399,7 +405,7 @@ static CGFloat itemMargin = 5;
     }
     
     [_doneButton sizeToFit];
-    _doneButton.frame = CGRectMake(self.view.tz_width - _doneButton.tz_width - 12 - 16, 12, MAX(44, _doneButton.tz_width + 16), 28);
+    _doneButton.frame = CGRectMake(self.view.tz_width - _doneButton.tz_width - 12 - 20, 12, MAX(44, _doneButton.tz_width + 20), 28);
 }
 
 - (void)titleTapAction {
@@ -408,15 +414,7 @@ static CGFloat itemMargin = 5;
         __weak typeof(self) weakSelf = self;
         self.albumPicker.selectedBlock = ^(TZAlbumModel *model) {
             weakSelf.model = model;
-            [weakSelf.titleButton setTitle:model.name forState:UIControlStateNormal];
-            
-            CGFloat padding = 0;
-            //图片在右，文字在左
-            weakSelf.titleButton.titleEdgeInsets = UIEdgeInsetsMake(0, -(20 + padding/2), 0, (20 + padding/2));
-            [weakSelf.titleButton.titleLabel sizeToFit];
-            weakSelf.titleButton.imageEdgeInsets = UIEdgeInsetsMake(0, (weakSelf.titleButton.titleLabel.frame.size.width+ padding/2), 0, -(weakSelf.titleButton.titleLabel.frame.size.width+ padding/2));
-            
-            weakSelf.titleBgView.bounds = CGRectMake(0, 0, weakSelf.titleButton.titleLabel.frame.size.width + 50, 32);
+            [weakSelf setupTitleText:model.name];
             
             [weakSelf reloadImageData];
             [weakSelf showAlbumPicker];
@@ -424,6 +422,18 @@ static CGFloat itemMargin = 5;
         [self addChildViewController:self.albumPicker];
         [self showAlbumPicker];
     }
+}
+
+- (void)setupTitleText:(NSString *)text {
+    [self.titleButton setTitle:text forState:UIControlStateNormal];
+    
+    CGFloat padding = 0;
+    //图片在右，文字在左
+    self.titleButton.titleEdgeInsets = UIEdgeInsetsMake(0, -(20 + padding/2), 0, (20 + padding/2));
+    [self.titleButton.titleLabel sizeToFit];
+    self.titleButton.imageEdgeInsets = UIEdgeInsetsMake(0, (self.titleButton.titleLabel.frame.size.width+ padding/2), 0, -(self.titleButton.titleLabel.frame.size.width+ padding/2));
+    
+    self.titleBgView.bounds = CGRectMake(0, 0, self.titleButton.titleLabel.frame.size.width + 50, 32);
 }
 
 - (void)showAlbumPicker {
@@ -536,7 +546,7 @@ static CGFloat itemMargin = 5;
         _originalPhotoLabel.frame = CGRectMake(fullImageWidth + 46, 0, 80, 50);
     }
     [_doneButton sizeToFit];
-    _doneButton.frame = CGRectMake(self.view.tz_width - _doneButton.tz_width - 12 - 16, 12, MAX(44, _doneButton.tz_width + 16), 28);
+    _doneButton.frame = CGRectMake(self.view.tz_width - _doneButton.tz_width - 12 - 20, 12, MAX(44, _doneButton.tz_width + 20), 28);
     _numberImageView.frame = CGRectMake(_doneButton.tz_left - 24 - 5, 13, 24, 24);
     _numberLabel.frame = _numberImageView.frame;
     _divideLine.frame = CGRectMake(0, 0, self.view.tz_width, 1);
@@ -691,6 +701,10 @@ static CGFloat itemMargin = 5;
 #pragma mark - UICollectionViewDataSource && Delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    if (_noDataLabel && _models.count) {
+        [_noDataLabel removeFromSuperview];
+        _noDataLabel = nil;
+    }
     if (_showTakePhotoBtn) {
         return _models.count + 1;
     }
@@ -705,10 +719,7 @@ static CGFloat itemMargin = 5;
         cell.imageView.image = tzImagePickerVc.takePictureImage;
         if ([tzImagePickerVc.takePictureImageName isEqualToString:@"takePicture80"]) {
             cell.imageView.contentMode = UIViewContentModeCenter;
-//            CGFloat rgb = 223 / 255.0;
-//            cell.imageView.backgroundColor = [UIColor colorWithRed:rgb green:rgb blue:rgb alpha:1.0];
         } else {
-//            cell.imageView.backgroundColor = [UIColor colorWithWhite:1.000 alpha:0.500];
         }
         return cell;
     }

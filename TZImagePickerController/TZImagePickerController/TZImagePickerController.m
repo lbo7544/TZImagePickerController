@@ -302,6 +302,8 @@
     self.naviTitleFont = [UIFont boldSystemFontOfSize:18];
     self.barItemTextFont = [UIFont systemFontOfSize:15];
     self.barItemTextColor = [UIColor whiteColor];
+    self.previewTextFont = [UIFont boldSystemFontOfSize:12];
+    self.doneBtnTextFont = [UIFont boldSystemFontOfSize:14];
     self.allowPreview = YES;
     // 2.2.26版本，不主动缩放图片，降低内存占用
     self.notScaleImage = YES;
