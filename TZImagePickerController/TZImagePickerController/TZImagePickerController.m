@@ -757,11 +757,6 @@
     [super viewDidLoad];
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     self.isFirstAppear = YES;
-//    if (@available(iOS 13.0, *)) {
-//        self.view.backgroundColor = UIColor.tertiarySystemBackgroundColor;
-//    } else {
-//        self.view.backgroundColor = [UIColor whiteColor];
-//    }
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     

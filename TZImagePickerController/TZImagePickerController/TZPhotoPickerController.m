@@ -413,6 +413,8 @@ static CGFloat itemMargin = 5;
     NSLog(@"titleTapAction");
     if (self.albumPicker) {
         __weak typeof(self) weakSelf = self;
+        TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)self.navigationController;
+        self.albumPicker.view.backgroundColor = tzImagePickerVc.naviBgColor;
         self.albumPicker.selectedBlock = ^(TZAlbumModel *model) {
             weakSelf.model = model;
             [weakSelf setupTitleText:model.name];
