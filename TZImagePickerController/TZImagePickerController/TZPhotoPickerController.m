@@ -94,7 +94,7 @@ static CGFloat itemMargin = 12;
 //    } else {
 //        self.view.backgroundColor = [UIColor whiteColor];
 //    }
-    self.view.backgroundColor = tzImagePickerVc.naviBgColor;
+    self.view.backgroundColor = tzImagePickerVc.normalBgColor;
     
     UIImage *image = tzImagePickerVc.arrowBtnIconImage;
     
@@ -212,6 +212,8 @@ static CGFloat itemMargin = 12;
 //        } else {
 //            _collectionView.backgroundColor = [UIColor whiteColor];
 //        }
+        TZImagePickerController *tzImagePicker = (TZImagePickerController *)self.navigationController;
+        _collectionView.backgroundColor = tzImagePicker.naviBgColor;
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.alwaysBounceHorizontal = NO;
