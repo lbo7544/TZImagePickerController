@@ -594,7 +594,8 @@ static CGFloat itemMargin = 12;
     // 1.6.8 判断是否满足最小必选张数的限制
     if (tzImagePickerVc.minImagesCount && tzImagePickerVc.selectedModels.count < tzImagePickerVc.minImagesCount) {
         NSString *title = [NSString stringWithFormat:[NSBundle tz_localizedStringForKey:@"Select a minimum of %zd photos"], tzImagePickerVc.minImagesCount];
-        [tzImagePickerVc showAlertWithTitle:title];
+//        [tzImagePickerVc showAlertWithTitle:title];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"tzImagePickerNoti" object:nil userInfo:@{@"toast":title}];
         return;
     }
     
@@ -814,7 +815,8 @@ static CGFloat itemMargin = 12;
                 [UIView showOscillatoryAnimationWithLayer:strongLayer type:TZOscillatoryAnimationToSmaller];
             } else {
                 NSString *title = [NSString stringWithFormat:[NSBundle tz_localizedStringForKey:@"Select a maximum of %zd photos"], tzImagePickerVc.maxImagesCount];
-                [tzImagePickerVc showAlertWithTitle:title];
+                // [tzImagePickerVc showAlertWithTitle:title];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"tzImagePickerNoti" object:nil userInfo:@{@"toast":title}];
             }
         }
     };
@@ -840,8 +842,10 @@ static CGFloat itemMargin = 12;
     TZAssetModel *model = _models[index];
     if (model.type == TZAssetModelMediaTypeVideo && !tzImagePickerVc.allowPickingMultipleVideo) {
         if (tzImagePickerVc.selectedModels.count > 0) {
-            TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
-            [imagePickerVc showAlertWithTitle:[NSBundle tz_localizedStringForKey:@"Can not choose both video and photo"]];
+            //TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
+            //[imagePickerVc showAlertWithTitle:[NSBundle tz_localizedStringForKey:@"Can not choose both video and photo"]];
+            NSString *title = [NSBundle tz_localizedStringForKey:@"Can not choose both video and photo"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"tzImagePickerNoti" object:nil userInfo:@{@"toast":title}];
         } else {
             TZVideoPlayerController *videoPlayerVc = [[TZVideoPlayerController alloc] init];
             videoPlayerVc.model = model;
@@ -849,8 +853,10 @@ static CGFloat itemMargin = 12;
         }
     } else if (model.type == TZAssetModelMediaTypePhotoGif && tzImagePickerVc.allowPickingGif && !tzImagePickerVc.allowPickingMultipleVideo) {
         if (tzImagePickerVc.selectedModels.count > 0) {
-            TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
-            [imagePickerVc showAlertWithTitle:[NSBundle tz_localizedStringForKey:@"Can not choose both photo and GIF"]];
+//            TZImagePickerController *imagePickerVc = (TZImagePickerController *)self.navigationController;
+//            [imagePickerVc showAlertWithTitle:[NSBundle tz_localizedStringForKey:@"Can not choose both photo and GIF"]];
+            NSString *title = [NSBundle tz_localizedStringForKey:@"Can not choose both photo and GIF"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"tzImagePickerNoti" object:nil userInfo:@{@"toast":title}];
         } else {
             TZGifPhotoPreviewController *gifPreviewVc = [[TZGifPhotoPreviewController alloc] init];
             gifPreviewVc.model = model;
