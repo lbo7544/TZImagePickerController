@@ -728,9 +728,17 @@ static CGFloat itemMargin = 5;
     cell.assetCellDidLayoutSubviewsBlock = tzImagePickerVc.assetCellDidLayoutSubviewsBlock;
     TZAssetModel *model;
     if (tzImagePickerVc.sortAscendingByModificationDate || !_showTakePhotoBtn) {
-        model = _models[indexPath.item];
+        if (indexPath.item > _models.count - 1) {
+            model = _models.lastObject;
+        } else {
+            model = _models[indexPath.item];
+        }
     } else {
-        model = _models[indexPath.item - 1];
+        if (indexPath.item > _models.count - 2) {
+            model = _models.lastObject;
+        } else {
+            model = _models[indexPath.item - 1];
+        }
     }
     cell.allowPickingGif = tzImagePickerVc.allowPickingGif;
     cell.model = model;
